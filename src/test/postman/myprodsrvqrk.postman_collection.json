@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "a3503ba4-dd1e-4f8a-9943-8bec2c50087b",
+		"name": "myprodsrvqrk",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "mypass",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"csi.demo 20@sistemapiemonte\",\r\n    \"password\": \"aaaaaaaa\"\r\n}"
+				},
+				"url": {
+					"raw": "http://lgqrk.csi.it:8080/myprodsrvqrk/login?method=axis",
+					"protocol": "http",
+					"host": [
+						"lgqrk",
+						"csi",
+						"it"
+					],
+					"port": "8080",
+					"path": [
+						"myprodsrvqrk",
+						"login"
+					],
+					"query": [
+						{
+							"key": "method",
+							"value": "axis"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add manufacturer",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "mypass",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "persistenceType",
+						"value": "JPA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"AAAA\",\r\n    \"name\": \"AAAUUUTTOOSS\",\r\n    \"models\": [\r\n        {\"code\": \"M1\", \"name\": \"Model_one\"},\r\n        {\"code\": \"M2\", \"name\": \"model_two\"}\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://lgqrk.csi.it:8080/myprodsrvqrk/manufacturers",
+					"protocol": "http",
+					"host": [
+						"lgqrk",
+						"csi",
+						"it"
+					],
+					"port": "8080",
+					"path": [
+						"myprodsrvqrk",
+						"manufacturers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete manufacturer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get manufacturers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}

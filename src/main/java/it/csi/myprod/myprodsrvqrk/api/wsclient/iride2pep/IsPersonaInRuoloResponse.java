@@ -1,0 +1,54 @@
+
+package it.csi.myprod.myprodsrvqrk.api.wsclient.iride2pep;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Classe Java per anonymous complex type.
+ * 
+ * <p>Il seguente frammento di schema specifica il contenuto previsto contenuto in questa classe.
+ * 
+ * <pre>
+ * &lt;complexType&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element name="isPersonaInRuoloReturn" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/restriction&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "isPersonaInRuoloReturn"
+})
+@XmlRootElement(name = "isPersonaInRuoloResponse")
+public class IsPersonaInRuoloResponse {
+
+    protected boolean isPersonaInRuoloReturn;
+
+    /**
+     * Recupera il valore della proprietà isPersonaInRuoloReturn.
+     * 
+     */
+    public boolean isIsPersonaInRuoloReturn() {
+        return isPersonaInRuoloReturn;
+    }
+
+    /**
+     * Imposta il valore della proprietà isPersonaInRuoloReturn.
+     * 
+     */
+    public void setIsPersonaInRuoloReturn(boolean value) {
+        this.isPersonaInRuoloReturn = value;
+    }
+
+}

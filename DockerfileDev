@@ -1,0 +1,7 @@
+FROM docker-base.ecosis.csi.it/maven:3.6.3_1.0 
+COPY ./m2 /root/.m2
+COPY . /usr/src/mymaven
+WORKDIR /usr/src/mymaven
+RUN env
+RUN cat .mvn/conf/settings.xml
+CMD ["mvn", "quarkus:dev"]

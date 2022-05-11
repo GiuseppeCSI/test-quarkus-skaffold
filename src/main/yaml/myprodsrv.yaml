@@ -1,0 +1,271 @@
+swagger: '2.0'
+info:
+  title: MYPRODSRV TEST API
+  description: API per il backend del test case allegato alle linee guida SPA.
+  version: 1.0.0
+host: 'mydevpc.csi.it:10110'
+schemes:
+  - http
+basePath: /restfacade/be
+paths:
+  /ping:
+    get:
+      description: ping
+      tags:
+        - system
+      produces: 
+        - 'text/plain'  
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+  /elaboration/long:
+    get:
+      description: esecuzione di operazioni con durata specificabile.
+        serve per testare le opzioni di tuning, ma anche le feature di timeout e retry
+      tags:
+        - test
+      parameters:
+        - in: query
+          name: duration
+          description: durata dell'esecuzione (in ms)
+          required: false
+          type: number
+        - in: query
+          name: failureRatio
+          description: probabilità di fallimento dell'esecuzione (tra 0 e 1)
+          required: false
+          type: number
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+  /manufacturers:
+    get:
+      description: "restituisce l elenco dei produttori di auto"
+      operationId: getManufacturers
+      tags:
+        - cars
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: details
+          type: boolean
+          required: false
+          description: se true l output conterrà i modelli. default=true
+        - in: header
+          name: persistenceType
+          type: string
+          enum: [jpa, mybatis]
+      responses:
+        200:
+          description: l'elenco dei produttori
+          schema:
+            type: array
+            items: 
+              $ref:  "#/definitions/CarManufacturer"
+    post:
+      description: inserisce un nuovo produttore di auto (con eventuali modelli e varianti)
+      tags:
+        - cars
+      operationId: createManufacturer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: manufacturer
+          required: true
+          schema:
+            $ref: "#/definitions/CarManufacturer"
+        - in: header
+          name: persistenceType
+          type: string
+          enum: [jpa, mybatis]
+      responses:
+        201:
+          description: creato
+          schema: 
+            type: object
+            $ref:  "#/definitions/CarManufacturer"
+  /manufacturers/{manufacturer}:
+    get:
+      description: "restituisce l elenco dei produttori di auto"
+      operationId: getManufacturer
+      tags:
+        - cars
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: manufacturer
+          type: string
+          required: true
+          description: codice del produttore
+        - in: query
+          name: details
+          type: boolean
+          required: false
+          description: se true l' output conterrà i modelli. default=true
+        - in: header
+          name: persistenceType
+          type: string
+          enum: [jpa, mybatis]
+      responses:
+        200:
+          description: il produttore specificato
+          schema:
+            type: object 
+            $ref:  "#/definitions/CarManufacturer"
+    delete:
+      description: "restituisce l elenco dei produttori di auto"
+      operationId: deleteManufacturer
+      tags:
+        - cars
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: manufacturer
+          type: string
+          required: true
+          description: codice del produttore
+        - in: query
+          name: details
+          type: boolean
+          required: false
+          description: se true l' output conterrà i modelli. default=true
+        - in: header
+          name: persistenceType
+          type: string
+          enum: [jpa, mybatis]
+      responses:
+        200:
+          description: il produttore specificato
+          schema:
+            type: "null"
+        404:
+          description: il produttore specificato non esiste
+          schema:
+            type: object
+            $ref: "#/definitions/Error"
+  /manufacturers/{manufacturer}/models:
+    get:
+      description: "restituisce l' elenco dei modelli di un produttore di auto"
+      operationId: getModels
+      tags:
+        - cars
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: manufacturer
+          type: string
+          required: true
+          description: codice del produttore
+        - in: query
+          name: details
+          type: boolean
+          required: false
+          description: se true l' output conterrà i modelli. default=true
+        - in: header
+          name: persistenceType
+          type: string
+          enum: [jpa, mybatis]
+      responses:
+        200:
+          description: il produttore specificato
+          schema:
+            type: object 
+            $ref:  "#/definitions/CarManufacturer"
+  /login:
+    post:
+      operationId: login
+      tags:
+        - security
+      produces:
+        - text/plain
+      parameters:
+        - in: body
+          name: credentials
+          schema:
+              $ref: "#/definitions/Credentials"
+        - in: query
+          name: method
+          type: string
+          enum:
+            - cxf
+            - axis1
+          required: true
+      responses:
+        200:
+          description: login ok
+          schema:
+            type: string
+        401:
+          description: login ko
+          schema:
+            type: string
+definitions:
+  Credentials:
+    type: object
+    properties: 
+      username:
+        type: string
+      password:
+        type: string
+  CarManufacturer:
+    type: object
+    properties: 
+      code:
+        type: string
+      name:
+        type: string
+      models:
+        type: array
+        items: 
+          $ref:  "#/definitions/CarModel"
+  CarModel:
+    type: object
+    properties: 
+      code:
+        type: string
+      name:
+        type: string
+      variants:
+        type: array
+        items: 
+          $ref:  "#/definitions/CarModelVariant"
+  CarModelVariant:
+    type: object
+    properties: 
+      code:
+        type: string
+      engineType:
+        type: string
+        $ref:  "#/definitions/EngineType"
+      enginePower:
+        type: number
+      doors:
+        type: integer
+  EngineType:
+    type: string
+    enum:
+      - gasoline
+      - diesel
+      - electric
+  Persistencetype:
+    type: string
+    enum: &PERSTYPE
+      - jpa
+      - mybatis
+  Error:
+    type: object
+    properties: 
+      code:
+        type: string
+    

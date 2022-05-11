@@ -1,0 +1,12 @@
+FROM docker-base.ecosis.csi.it/maven:3.6.3_1.0 
+#COPY --chown=1001 ./.m2 /root/.m2
+#COPY --chown=1001 . /usr/src/mymaven
+COPY ./.m2 /root/.m2
+COPY . /usr/src/mymaven
+RUN chmod +x /usr/local/bin/mvn-entrypoint.sh
+WORKDIR /usr/src/mymaven
+RUN ls -lat
+RUN cat .mvn/conf/settings.xml
+EXPOSE 8080
+#USER 1001
+CMD ["mvn", "quarkus:dev", "--settings", ".mvn/conf/settings.xml", "-DdebugHost=0.0.0.0", "-Dquarkus.http.host=0.0.0.0"]

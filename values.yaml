@@ -1,0 +1,40 @@
+image:
+  tag: latest
+development:
+  enabled: true
+livenessProbe:
+  httpGet:
+    scheme: HTTP
+    path: /q/health/live
+    httpHeaders: []
+    port: 8080
+  initialDelaySeconds: 360
+  periodSeconds: 60
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 2
+
+## If you don't want a livenessProbe, override like this in your values file
+# livenessProbe: ''
+
+## Freeform Readiness Probe. More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health
+readinessProbe:
+  httpGet:
+    scheme: HTTP
+    path: /q/health/live
+    httpHeaders: []
+    port: 8080
+  initialDelaySeconds: 360
+  periodSeconds: 60
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 2
+
+ingress:
+  enabled: true
+  servicePort: 8080
+  hosts:
+    - host: vue.k8s-svil01.nivolapiemonte.it
+      paths:
+        - path: /
+          pathType: Prefix

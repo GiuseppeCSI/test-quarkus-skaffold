@@ -1,0 +1,54 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+build:
+  artifacts:
+  - image: docker-projects.ecosis.csi.it/testingmonolith/quarkus
+    docker: 
+      dockerfile: Dockerfile.dev
+    bazel: null
+  tagPolicy:
+    sha256: {}	
+  googleCloudBuild: null
+profiles:
+  - name: dev
+    activation:
+      - command: dev
+    build:
+      artifacts:
+      - image: docker-projects.ecosis.csi.it/testingmonolith/quarkus
+        docker:
+          dockerfile: Dockerfile.dev
+        sync:
+          manual:
+          # Sync all the javascript files that are in the src folder
+          # with the container src folder
+          - src: 'src/**/*'
+            dest: .
+deploy:
+  helm:
+    releases:
+    - name: quarkus-app
+      repo: http://repo.ecosis.csi.it/artifactory/helm-base
+      remoteChart: quarkus
+      version: 0.0.1
+      artifactOverrides:
+        image.repository: docker-projects.ecosis.csi.it/testingmonolith/quarkus
+      #wait: true
+      #valuesFiles:
+      #- helm-skaffold-values.yaml
+      skipBuildDependencies: true # Skip helm dep build
+      valuesFiles:
+        - values.yaml
+        
+      #valuesFiles:
+      #  - helm-values-file.yaml
+      #recreatePods will pass --recreate-pods to helm upgrade
+      #recreatePods: true
+      #overrides builds an override values.yaml file to run with the helm deploy
+      #overrides:
+      # some:
+      #   key: someValue
+      #setValues get appended to the helm deploy with --set.
+      #setValues:
+      # some:
+      #   key: someValue
